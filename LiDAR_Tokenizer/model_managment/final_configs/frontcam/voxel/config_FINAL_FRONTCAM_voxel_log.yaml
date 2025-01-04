@@ -1,0 +1,30 @@
+model:
+  target: model_managment.models.UltraLidarModel
+  base_learning_rate: 2.0e-3
+  params:
+    codebook:
+      target: model_managment.codebooks.VectorQuantizer
+      params:
+        n_embed: 1024
+        embed_dim: 1024
+        beta: 0.25
+        cosine_similarity: false
+        rearrange: false
+
+    voxelizer:
+      target: data_managment.voxelize.LogVoxelizer
+      params:
+        x_min: 2.7
+        x_max: 165
+        z_min: -2
+        z_max: 18
+        z_step: 0.2
+        num_x_bins: 320
+        num_angle_bins: 192
+        fov: 2.268
+      mode: 'log'
+    
+    patch_size: 8
+    img_size: [192,320]
+dataset:
+  filter_fov: true

@@ -1,0 +1,30 @@
+model:
+  target: model_managment.models.UltraLidarModel
+  base_learning_rate: 2.0e-3
+  params:
+    codebook:
+      target: model_managment.codebooks.VectorQuantizer
+      params:
+        n_embed: 4096
+        embed_dim: 1024
+        beta: 0.25
+        cosine_similarity: false
+        rearrange: false
+
+    voxelizer:
+      target: data_managment.voxelize.Voxelizer
+      params:
+        x_min: -50
+        x_max: 50
+        y_min: -50
+        y_max: 50
+        z_min: -5
+        z_max: 5
+        step: 0.1953125
+        z_step: 0.15
+        fov: 6.28318 #horizontal
+    
+    patch_size: 16
+    img_size: 512
+dataset:
+  filter_fov: false

@@ -1,0 +1,17 @@
+LidarTokenizer/
+logs/
+.cache/
+.ipynb_checkpoints/
+.vscode/
+old_logs/
+pretrained_maskgit/
+saved_img/*
+*.log
+*.out
+Dataset/img_tokens/
+Dataset/imgs/
+Dataset/lidar_tokens/
+Dataset/*.json
+*/__pycache__/
+*/*/__pycache__/
+sampled_images/

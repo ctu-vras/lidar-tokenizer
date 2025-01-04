@@ -1,0 +1,85 @@
+model:
+  base_learning_rate: 3.6e-4
+  target: model_managment.models.LidarDiffusionModelNoGan
+  params:
+
+    encoder_decoder:
+      encoder_target: model_managment.encoders.LidarDiffusionEncoder2
+      decoder_target: model_managment.decoders.LidarDiffusionDecoder2
+      params:
+        double_z: false
+        z_channels: 8
+        in_channels: 1
+        out_ch: 2
+        ch: 64
+        ch_mult: [1,2,4]  
+        strides: [[2,2],[2,2]]
+        num_res_blocks: 2
+        attn_levels: []
+        dropout: 0.0
+
+    codebook:
+      target: model_managment.codebooks.FSQ
+      params:
+        embed_dim: 5
+        levels: [7,5,5,5,5]
+        rearrange: True
+
+    monitor: val/rec_loss
+    lib_name: lidm
+    use_mask: True  # False
+    lossconfig:
+      target: model_managment.losses.lidar_diffusion_loss.LidarDiffusionLossNoGan
+      params:
+        dataset_config:
+          size: [32, 1024]
+          fov: [ 10,-30 ]
+          depth_range: [ 1.0,70.0 ]
+          depth_scale: 6.15  # np.log2(depth_max + 1)
+          log_scale: true
+          x_range: [ -50.0, 50.0 ]
+          y_range: [ -50.0, 50.0 ]
+          z_range: [ -3.0, 1.0 ]
+          t_ratio: 0.
+          b_ratio: 1.
+          l_ratio: 0.
+          r_ratio: 1.
+          sensor_pos: [0., 0., 0.]
+
+          resolution: 1
+          num_channels: 1
+          num_cats: 10
+          num_views: 2
+          num_sem_cats: 19
+          filtered_map_cats: [ ]
+        disc_conditional: false
+        disc_start: 1
+        disc_in_channels: 4
+        disc_num_layers: 2
+        disc_weight: 0.75  # 0.6
+        disc_version: v1  # v1
+        codebook_weight: 1
+        curve_length: 1
+        geo_factor: 0.005
+        mask_factor: 0.2  # 0.0
+        perceptual_factor: 1
+        perceptual_type: rangenet_dec
+        root_dir: /home/LiDAR_Tokenizer/
+
+
+
+
+#batch_size: 4
+#num_workers: 8
+
+#aug:
+#  flip: true
+#  rotate: true
+#  keypoint_drop: false
+#  keypoint_drop_range: [ 5,20 ]
+#  randaug: false
+
+#benchmark: true
+#accumulate_grad_batches: 2
+#max_steps: 40000
+#sync_batchnorm: true

@@ -1,0 +1,96 @@
+model:
+  base_learning_rate: 4.0e-3
+  target: model_managment.models.LidarDiffusionModelNoGan
+  params:
+
+    encoder_decoder:
+      encoder_target: model_managment.encoders.LidarDiffusionEncoder
+      decoder_target: model_managment.decoders.LidarDiffusionDecoder
+      params:
+        double_z: false
+        z_channels: 8
+        in_channels: 1
+        out_ch: 2
+        ch: 64
+        ch_mult: [1,2,4]
+        strides: [[2,2],[2,2]]
+        num_res_blocks: 2
+        attn_levels: []
+        dropout: 0.0
+
+    codebook:
+      target: model_managment.codebooks.FSQ
+      params:
+        embed_dim: 5
+        levels: [7,5,5,5,5]
+        rearrange: True
+
+    monitor: val/rec_loss
+    lib_name: lidm
+    use_mask: True  # False
+    lossconfig:
+      target: model_managment.losses.lidar_diffusion_loss.LidarDiffusionLossNoGan
+      params:
+        dataset_config:
+          size: [132, 458]
+          fov: [ 47.2,-30 ]
+          depth_range: [ 1.0,165.0 ] #150.0
+          depth_scale: 7.366 #6.150 #7.238  # np.log2(depth_max + 1)
+          log_scale: true
+          #x_range: [ 0.0, 100.0 ]
+          #y_range: [ -50.0, 50.0 ]
+          #z_range: [ -2.0, 18.0 ]
+          t_ratio: 0.19
+          b_ratio: 0.92
+          l_ratio: 0.317
+          r_ratio: 0.684
+          sensor_pos: [1.13, 0., 1.7]
+
+          #resolution: 1
+          #num_channels: 1
+          #num_cats: 10
+          #num_views: 2
+          #num_sem_cats: 19
+          #filtered_map_cats: [ ]
+        disc_conditional: false
+        disc_start: 1
+        disc_in_channels: 4
+        disc_num_layers: 2
+        disc_weight: 0.75  # 0.6
+        disc_version: v1  # v1
+        codebook_weight: 1
+        curve_length: 1
+        geo_factor: 0.005
+        mask_factor: 0.2  # 0.0
+        perceptual_factor: 0
+        perceptual_type: rangenet_dec
+        root_dir: /home/LiDAR_Tokenizer/
+
+    #ddconfig:
+    #  double_z: false
+    #  z_channels: 8
+    #  in_channels: 1
+    #  out_ch: 2
+    #  ch: 64
+    #  ch_mult: [1,2,4]  # num_down = len(ch_mult)-1
+    #  strides: [[2,2],[2,2]]
+    #  num_res_blocks: 2
+    #  attn_levels: []
+    #  dropout: 0.0
+
+
+
+#batch_size: 4
+#num_workers: 8
+
+#aug:
+#  flip: true
+#  rotate: true
+#  keypoint_drop: false
+#  keypoint_drop_range: [ 5,20 ]
+#  randaug: false
+
+#benchmark: true
+#accumulate_grad_batches: 2
+#max_steps: 40000
+#sync_batchnorm: true
