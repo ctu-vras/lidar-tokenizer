@@ -1,5 +1,5 @@
 # LiDAR Tokenizer
-This is a repository containing code used in the Master's thesis *LiDAR Tokenizer* by Adam Herold written in 09/2024-01/2025.
+This is a repository containing code used in the Master's thesis [*LiDAR Tokenizer*](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://dspace.cvut.cz/bitstream/handle/10467/120372/F3-DP-2025-Herold-Adam-master-thesis-final.pdf&ved=2ahUKEwj74sXuqruLAxWFg_0HHbE6DysQFnoECBgQAQ&usg=AOvVaw3gErIWidQqKhFja6VfvqWG) by Adam Herold written in 09/2024-01/2025.
 It contains two packages:
  - **LiDAR_Tokenizer** contains everything regarding the training and evaluation of two LiDAR tokenizer models.
  - **LiDAR_MaskGIT** contains a modified multimodal MaskGIT model for image-LiDAR point cloud synthesis.
